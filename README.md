@@ -73,13 +73,25 @@ Track progress in [PROGRESS.md](PROGRESS.md).
 
 Course names on Skill Builder change often; check the plan page for the current list.
 
+## Study in the browser
+
+```bash
+python serve.py
+```
+
+Opens http://127.0.0.1:8000 (stdlib only, local only). The site walks you through the 6-week path step by step:
+read the page, then **Mark complete & continue**. Progress is saved to `progress.json` (git-ignored), so the next
+`python serve.py` reopens where you stopped.
+
 ## Folder layout
 
 ```
 aws-ai-practitioner-prep/
 ├── README.md            this roadmap
-├── PROGRESS.md          checklist you tick off
-├── domains/             one study note per exam domain (objectives, concepts, services, repo lessons, exercises, traps)
+├── index.html, serve.py course website + local server that saves progress.json
+├── course/              full course: domain-1..5 lessons with check-yourself questions, lab-00..06 step-by-step guides
+├── PROGRESS.md          checklist you tick off (the site's "My progress" page replaces it)
+├── domains/             one cheat sheet per exam domain (objectives, concepts, services, repo lessons, exercises, traps)
 ├── labs/                hands-on: 1 offline + 4 cheap AWS labs (cents), setup and cleanup
 ├── quiz/                50 original questions weighted like the exam + stdlib runner
 └── capstone/            end-to-end project tying all 5 domains together

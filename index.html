@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIF-C01 Prep Path</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --ink:#232f3e; --ink-2:#161e2d; --ink-3:#37475a; --orange:#ff9900; --orange-2:#ec7211;
+    --bg:#f2f3f3; --card:#fff; --fg:#16191f; --muted:#5f6b7a; --line:#d5dbdb; --link:#0972d3; --code:#f4f4f4;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.6 "Amazon Ember", "Helvetica Neue", Roboto, Arial, sans-serif; }
+  a { color:var(--link); }
+
+  /* top bar */
+  header { background:var(--ink); color:#fff; position:sticky; top:0; z-index:10; }
+  .bar { max-width:1200px; margin:0 auto; padding:0 16px; height:56px; display:flex; align-items:center; gap:24px; }
+  .brand { color:#fff; text-decoration:none; font-weight:700; font-size:17px; display:flex; align-items:center; gap:10px; white-space:nowrap; }
+  .brand i { width:28px; height:28px; border-radius:6px; background:var(--orange); color:var(--ink); display:grid; place-items:center; font-style:normal; font-size:13px; font-weight:800; }
+  .bar nav { display:flex; gap:4px; overflow-x:auto; }
+  .bar nav a { color:#d1d5db; text-decoration:none; padding:6px 10px; border-radius:4px; font-size:14px; white-space:nowrap; }
+  .bar nav a:hover { color:#fff; background:var(--ink-3); }
+  .bar .spacer { flex:1; }
+
+  .btn { display:inline-block; background:var(--orange); color:var(--ink-2); font-weight:700; text-decoration:none; padding:8px 18px; border-radius:20px; font-size:14px; border:1px solid var(--orange-2); white-space:nowrap; }
+  .btn:hover { background:var(--orange-2); }
+  .btn.ghost { background:transparent; color:var(--link); border-color:var(--link); }
+  .btn.ghost:hover { background:#f0f7ff; }
+
+  /* hero */
+  .hero { background:linear-gradient(135deg, var(--ink-2), var(--ink) 60%, var(--ink-3)); color:#fff; padding:56px 16px 72px; }
+  .wrap { max-width:1200px; margin:0 auto; }
+  .eyebrow { font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); }
+  .hero h1 { font-size:clamp(30px, 5vw, 46px); line-height:1.15; margin:10px 0 14px; max-width:760px; }
+  .hero p { color:#d1d5db; max-width:680px; font-size:17px; margin:0; }
+  .choose { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; margin-top:32px; max-width:760px; }
+  .choose a { display:block; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18); border-radius:10px; padding:18px 20px; color:#fff; text-decoration:none; transition:.15s; }
+  .choose a:hover { border-color:var(--orange); background:rgba(255,153,0,.08); }
+  .choose small { display:block; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#aab7c4; }
+  .choose b { font-size:18px; }
+  .choose b::after { content:" →"; color:var(--orange); }
+
+  .stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); background:var(--card); border-radius:10px; box-shadow:0 1px 4px rgba(0,28,36,.15); margin:-36px auto 0; position:relative; max-width:1200px; }
+  .stats div { padding:18px 20px; border-right:1px solid var(--line); }
+  .stats div:last-child { border-right:0; }
+  .stats b { display:block; font-size:24px; color:var(--ink); }
+  .stats span { color:var(--muted); font-size:13px; }
+
+  section { padding:56px 16px 8px; scroll-margin-top:40px; }
+  section > .wrap > h2 { font-size:28px; margin:6px 0 6px; color:var(--ink); }
+  section > .wrap > .lead { color:var(--muted); max-width:720px; margin:0 0 24px; }
+
+  .card { background:var(--card); border-radius:10px; box-shadow:0 1px 3px rgba(0,28,36,.12); border-top:3px solid transparent; padding:22px; display:flex; flex-direction:column; }
+  .card:hover { border-top-color:var(--orange); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:18px; }
+  .kicker { font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .card h3 { margin:6px 0 8px; font-size:19px; color:var(--ink); }
+  .card p { margin:0 0 14px; color:var(--muted); font-size:14px; }
+  .card .foot { margin-top:auto; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .weight { height:8px; background:#e9ebed; border-radius:4px; overflow:hidden; margin:4px 0 14px; }
+  .weight i { display:block; height:100%; background:var(--orange); }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+  .tags span { font-size:12px; background:#f2f8fd; color:#033160; border:1px solid #b5d6f4; border-radius:12px; padding:1px 9px; }
+  .badge { font-size:12px; font-weight:700; border-radius:4px; padding:2px 8px; }
+  .badge.free { background:#e9f7ec; color:#037f0c; }
+  .badge.aws { background:#fff4e5; color:#8d4b00; }
+
+  /* week path */
+  .path { counter-reset:w; display:grid; gap:14px; }
+  .step { display:grid; grid-template-columns:72px 1fr; gap:18px; background:var(--card); border-radius:10px; box-shadow:0 1px 3px rgba(0,28,36,.12); padding:20px; }
+  .step .num { width:56px; height:56px; border-radius:50%; background:var(--ink); color:#fff; display:grid; place-items:center; text-align:center; font-weight:800; font-size:20px; line-height:1; }
+  .step .num small { display:block; font-size:9px; letter-spacing:.1em; color:var(--orange); font-weight:700; }
+  .step h3 { margin:0 0 6px; color:var(--ink); font-size:18px; }
+  .step dl { display:grid; grid-template-columns:auto 1fr; gap:4px 14px; margin:0 0 12px; font-size:14px; }
+  .step dt { font-weight:700; color:var(--muted); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding-top:2px; }
+  .step dd { margin:0; }
+  .step .links { display:flex; gap:8px; flex-wrap:wrap; }
+  .step .links a { font-size:13px; text-decoration:none; border:1px solid var(--line); border-radius:16px; padding:3px 12px; color:var(--ink); background:#fafafa; }
+  .step .links a:hover { border-color:var(--orange); }
+
+  .cta { background:var(--ink); color:#fff; border-radius:12px; padding:28px; display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; }
+  .cta h3 { margin:6px 0 8px; font-size:21px; }
+  .cta p { color:#d1d5db; margin:0 0 14px; }
+  .cta code { display:block; background:var(--ink-2); color:var(--orange); padding:10px 14px; border-radius:6px; margin-bottom:6px; font-size:14px; }
+
+  footer { color:var(--muted); font-size:13px; text-align:center; padding:48px 16px; }
+
+  /* doc view */
+  .doc { max-width:1200px; margin:0 auto; display:flex; gap:24px; padding:24px 16px; align-items:flex-start; }
+  .side { width:260px; flex-shrink:0; background:var(--card); border-radius:10px; box-shadow:0 1px 3px rgba(0,28,36,.12); padding:14px; position:sticky; top:72px; max-height:calc(100vh - 88px); overflow:auto; }
+  .side h4 { font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:14px 8px 4px; }
+  .side a { display:block; padding:5px 10px; border-radius:6px; color:var(--fg); text-decoration:none; font-size:14px; border-left:3px solid transparent; }
+  .side a:hover { background:var(--bg); }
+  .side a.active { border-left-color:var(--orange); background:#fff8ee; font-weight:700; }
+  article { flex:1; min-width:0; background:var(--card); border-radius:10px; box-shadow:0 1px 3px rgba(0,28,36,.12); padding:32px clamp(16px, 4vw, 44px); }
+  article h1 { color:var(--ink); margin-top:0; }
+  article [id] { scroll-margin-top:72px; }
+  article h2 { color:var(--ink); border-bottom:1px solid var(--line); padding-bottom:6px; margin-top:32px; }
+  article table { border-collapse:collapse; display:block; overflow-x:auto; font-size:14px; }
+  article th { background:var(--bg); text-align:left; }
+  article th, article td { border:1px solid var(--line); padding:7px 12px; }
+  article pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:14px; overflow-x:auto; font-size:13px; }
+  code { font-family:Consolas, ui-monospace, monospace; }
+  article :not(pre) > code { background:var(--code); padding:2px 5px; border-radius:4px; font-size:.92em; }
+  article details { border:1px solid var(--line); border-radius:6px; padding:6px 12px; margin:-4px 0 16px; background:#fafafa; }
+  article summary { cursor:pointer; color:var(--link); font-weight:700; }
+  article blockquote { border-left:4px solid var(--orange); margin:0; padding:2px 16px; color:var(--muted); background:#fffaf2; }
+
+  /* step tracking */
+  .side .overall { display:block; padding:6px 10px 10px; color:var(--fg); border-bottom:1px solid var(--line); margin-bottom:6px; border-left:0; }
+  .side .overall b { font-size:20px; color:var(--ink); }
+  .side .overall .weight { margin:6px 0 0; }
+  .side h4 { display:flex; justify-content:space-between; gap:8px; }
+  .side h4.cur { color:var(--ink); }
+  .side h4 span { font-weight:700; color:var(--muted); }
+  .side a.st { display:flex; gap:8px; align-items:flex-start; }
+  .side a.st i { flex-shrink:0; width:16px; height:16px; margin-top:3px; border-radius:50%; border:2px solid #aab7c4; }
+  .side a.st.done i { background:#037f0c; border-color:#037f0c; }
+  .side a.st.done i::after { content:"✓"; color:#fff; font-size:10px; font-style:normal; display:block; text-align:center; line-height:12px; font-weight:800; }
+  .side a.st.done { color:var(--muted); }
+  .side .ref { margin-top:14px; border-top:1px solid var(--line); padding-top:8px; }
+  .side .ref summary { cursor:pointer; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:700; padding:4px 8px; }
+  .banner { background:#fff8ee; border:1px solid #ffd59a; border-left:4px solid var(--orange); border-radius:8px; padding:12px 16px; margin-bottom:24px; }
+  .banner b { display:block; font-size:17px; color:var(--ink); }
+  .banner p { margin:4px 0 0; color:var(--muted); }
+  .banner pre { margin:8px 0 0; }
+  .finish { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:40px; padding-top:20px; border-top:2px solid var(--line); }
+  .finish .spacer { flex:1; }
+  .finish .btn { font-size:15px; padding:10px 22px; cursor:pointer; white-space:normal; text-align:left; }
+  .linkish { background:none; border:0; color:var(--link); cursor:pointer; font:inherit; font-size:13px; text-decoration:underline; }
+  .num.ok { background:#037f0c; }
+  .wk-pct { font-size:13px; color:var(--muted); font-weight:700; margin-left:6px; }
+  .step .links a.ok { background:#e9f7ec; border-color:#9ad4a3; color:#037f0c; }
+  .weight.big { height:12px; }
+  .checks { list-style:none; padding:0; } .checks li { padding:4px 0; } .checks input { accent-color:#037f0c; width:16px; height:16px; vertical-align:-2px; }
+  .muted { color:var(--muted); }
+  @media (max-width:800px) {
+    .doc { flex-direction:column; align-items:stretch; } .side { width:100%; position:static; max-height:none; }
+    .step { grid-template-columns:1fr; } .stats div { border-right:0; border-bottom:1px solid var(--line); }
+    .bar nav { display:none; }
+  }
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="brand" href="#"><i>AI</i>AIF-C01 Prep</a>
+  <nav>
+    <a href="#path">6-week path</a><a href="#domains">Domains</a><a href="#labs">Labs</a>
+    <a href="#/capstone/README.md">Capstone</a><a href="#/README.md">Roadmap</a>
+  </nav>
+  <span class="spacer"></span>
+  <a class="btn" href="#/progress">My progress</a>
+</div></header>
+<main id="app"></main>
+
+<script>
+const DOMAINS = [
+  { n:1, title:'Fundamentals of AI and ML', w:20, q:10, file:'1-ai-ml-fundamentals.md',
+    blurb:'AI vs ML vs deep learning, learning types, inference types, the ML lifecycle and when AI is the right tool.',
+    tags:['Supervised / unsupervised','Inference types','ML lifecycle','SageMaker','Metrics'] },
+  { n:2, title:'Fundamentals of Generative AI', w:24, q:12, file:'2-genai-fundamentals.md',
+    blurb:'Tokens, embeddings, transformers and foundation models, token pricing, context engineering and agentic AI.',
+    tags:['Tokens & embeddings','FM lifecycle','MCP','Agentic AI','Hallucinations'] },
+  { n:3, title:'Applications of Foundation Models', w:28, q:14, file:'3-foundation-model-applications.md',
+    blurb:'The biggest domain: model selection, RAG and Knowledge Bases, prompting, fine-tuning, distillation and evaluation.',
+    tags:['RAG','Prompt Management','Fine-tuning','Distillation','LLM-as-a-judge'] },
+  { n:4, title:'Guidelines for Responsible AI', w:14, q:7, file:'4-responsible-ai.md',
+    blurb:'Bias, fairness, robustness and veracity, Guardrails, transparency and explainability tooling.',
+    tags:['Bedrock Guardrails','SageMaker Clarify','Model Cards','Bias & variance'] },
+  { n:5, title:'Security, Compliance & Governance', w:14, q:7, file:'5-security-compliance-governance.md',
+    blurb:'IAM, encryption, PrivateLink, shared responsibility, AgentCore Identity, prompt injection and audit services.',
+    tags:['IAM','Shared responsibility','CloudTrail','AWS Config','Prompt injection'] },
+];
+// Each week = ordered steps. A step is one page; "Mark complete & continue" ticks it and opens the next.
+const WEEKS = [
+  { n:0, title:'Setup', read:'Lab 00 setup guide', do:'AWS account, budget alarm, IAM user, CLI, Bedrock in us-east-1',
+    gate:'aws sts get-caller-identity works', steps:[
+      { t:'AWS setup (Lab 00)', f:'course/lab-00.md' },
+    ] },
+  { n:1, title:'D1 · AI/ML fundamentals', read:'Domain 1 course', do:'Lab 01 (offline), Lab 04 AI services',
+    gate:'quiz --domain 1 ≥ 80%', steps:[
+      { t:'Domain 1 course', f:'course/domain-1.md' },
+      { t:'Lab 01 · ML metrics', f:'course/lab-01.md' },
+      { t:'Lab 04 · AI services', f:'course/lab-04.md' },
+      { t:'Quiz · Domain 1', f:'quiz/quiz.py', cmd:'python quiz/quiz.py --domain 1', note:'Pass with 80% or more before moving on.' },
+    ] },
+  { n:2, title:'D2 · GenAI fundamentals', read:'Domain 2 course', do:'Lab 02: tokens, temperature, cost',
+    gate:'quiz --domain 2 ≥ 80%', steps:[
+      { t:'Domain 2 course', f:'course/domain-2.md' },
+      { t:'Lab 02 · Bedrock basics', f:'course/lab-02.md' },
+      { t:'Quiz · Domain 2', f:'quiz/quiz.py', cmd:'python quiz/quiz.py --domain 2', note:'Pass with 80% or more before moving on.' },
+    ] },
+  { n:3, title:'D3 · FM applications (1/2)', read:'Domain 3 course, modules 3.1–3.2', do:'Lab 03: RAG from scratch on Bedrock',
+    gate:'Lab 03 runs and answers are grounded', steps:[
+      { t:'Domain 3 · modules 3.1–3.2', f:'course/domain-3.md', note:'This week: Module 3.1 (design) and Module 3.2 (prompting). Modules 3.3–3.4 are next week.' },
+      { t:'Lab 03 · RAG from scratch', f:'course/lab-03.md' },
+    ] },
+  { n:4, title:'D3 · FM applications (2/2)', read:'Domain 3 course, modules 3.3–3.4', do:'Bedrock console: Prompt Management, Model Evaluation',
+    gate:'quiz --domain 3 ≥ 80%', steps:[
+      { t:'Domain 3 · modules 3.3–3.4', f:'course/domain-3.md', note:'This week: Module 3.3 (training and fine-tuning) and Module 3.4 (evaluation).' },
+      { t:'Lab 06 · Bedrock console tour', f:'course/lab-06.md' },
+      { t:'Quiz · Domain 3', f:'quiz/quiz.py', cmd:'python quiz/quiz.py --domain 3', note:'Pass with 80% or more before moving on.' },
+    ] },
+  { n:5, title:'D4 + D5 · Responsible AI & security', read:'Domain 4 and 5 courses', do:'Lab 05 Guardrails',
+    gate:'quiz --domain 4 and 5 ≥ 80%', steps:[
+      { t:'Domain 4 course', f:'course/domain-4.md' },
+      { t:'Lab 05 · Guardrails', f:'course/lab-05.md' },
+      { t:'Quiz · Domain 4', f:'quiz/quiz.py', cmd:'python quiz/quiz.py --domain 4', note:'Pass with 80% or more.' },
+      { t:'Domain 5 course', f:'course/domain-5.md' },
+      { t:'Quiz · Domain 5', f:'quiz/quiz.py', cmd:'python quiz/quiz.py --domain 5', note:'Pass with 80% or more.' },
+    ] },
+  { n:6, title:'Capstone + exam simulation', read:'Capstone brief', do:'Capstone, Official Practice Exam, quiz --mock',
+    gate:'≥ 85% everywhere → book the exam', steps:[
+      { t:'Capstone project', f:'capstone/README.md' },
+      { t:'Run the capstone eval', f:'capstone/eval_assistant.py', cmd:'python capstone/eval_assistant.py', note:'Target: 80% or more task completion and 100% correct refusals.' },
+      { t:'Mock exam', f:'quiz/quiz.py', cmd:'python quiz/quiz.py --mock', note:'Then take the AWS Official Practice Exam on Skill Builder. 85% or more everywhere → book the exam.' },
+    ] },
+];
+WEEKS.forEach(w => w.steps.forEach((s, i) => { s.key = `${w.n}.${i + 1}`; s.week = w; }));
+const STEPS = WEEKS.flatMap(w => w.steps);
+
+const LABS = [
+  { n:'01', title:'ML metrics', file:'lab01_ml_metrics.py', aws:false, cost:'free', d:'1, 3', blurb:'Confusion matrix, precision/recall/F1, threshold trade-off, ROUGE-1, BLEU-1.' },
+  { n:'02', title:'Bedrock basics', file:'lab02_bedrock_basics.py', aws:true, cost:'< $0.01', d:'2, 3', blurb:'Converse API, tokens, cost per call, temperature and nondeterminism.' },
+  { n:'03', title:'RAG from scratch', file:'lab03_rag.py', aws:true, cost:'< $0.01', d:'2, 3, 5', blurb:'Chunk → Titan embeddings → cosine search → grounded answer.' },
+  { n:'04', title:'AI services', file:'lab04_ai_services.py', aws:true, cost:'free tier', d:'1', blurb:'Comprehend sentiment, entities and PII, Translate, Polly.' },
+  { n:'05', title:'Guardrails', file:'lab05_guardrails.py', aws:true, cost:'< $0.01', d:'3, 4, 5', blurb:'Denied topic, PII masking, prompt attack, grounding check.' },
+];
+const REFERENCE = [
+  ['Roadmap', 'README.md'],
+  ...DOMAINS.map(d => [`Domain ${d.n} cheat sheet`, 'domains/' + d.file]),
+  ['Labs README', 'labs/README.md'],
+  ...LABS.map(l => [l.file, 'labs/' + l.file]),
+];
+
+// progress: progress.json via serve.py (survives restarts), localStorage as fallback
+let done = new Set(), last = '';
+try { const p = JSON.parse(localStorage.getItem('aif-progress') || '{}'); done = new Set(p.done || []); last = p.last || ''; } catch {}
+async function loadProgress() {
+  try {
+    const p = await (await fetch('progress.json', { cache:'no-store' })).json();
+    (p.done || []).forEach(k => done.add(k));
+    last = p.last || last;
+  } catch {}
+}
+let saving = Promise.resolve();
+const save = () => {
+  const body = JSON.stringify({ done:[...done], last, updated:new Date().toISOString() });
+  try { localStorage.setItem('aif-progress', body); } catch {}
+  // one POST at a time so an older save never overwrites a newer one
+  saving = saving.then(() => fetch('progress', { method:'POST', headers:{ 'Content-Type':'application/json' }, body })).catch(() => {});
+};
+const nextStep = () => STEPS.find(s => !done.has(s.key));
+const pct = steps => Math.round(steps.filter(s => done.has(s.key)).length / steps.length * 100);
+
+const app = document.getElementById('app');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+mermaid.initialize({ startOnLoad:false, theme:'default' });
+
+function stepLink(s, cur) {
+  return `<a href="#/step/${s.key}" class="st ${done.has(s.key) ? 'done' : ''} ${cur === s ? 'active' : ''}"><i></i>${esc(s.t)}</a>`;
+}
+
+function home() {
+  const nx = nextStep();
+  app.innerHTML = `
+  <div class="hero"><div class="wrap">
+    <div class="eyebrow">5 domains · 6 weeks · 7 hands-on labs</div>
+    <h1>AWS Certified AI Practitioner learning path</h1>
+    <p>Learn the concepts by building small things on AWS, then prove it with original practice questions. Follow the week-by-week path to exam day, one step at a time.</p>
+    <div class="choose">
+      <a href="${nx ? '#/step/' + nx.key : '#/progress'}"><small>${pct(STEPS)}% complete</small><b>${nx ? (done.size ? 'Continue: ' : 'Start: ') + esc(nx.t) : 'Path complete — review'}</b></a>
+      <a href="#/progress"><small>Explore by schedule</small><b>See my progress</b></a>
+    </div>
+  </div></div>
+  <div style="padding:0 16px"><div class="stats">
+    <div><b>65</b><span>questions (50 scored)</span></div>
+    <div><b>90 min</b><span>exam duration</span></div>
+    <div><b>700</b><span>passing score / 1000</span></div>
+    <div><b>$100</b><span>exam fee</span></div>
+    <div><b>v1.1</b><span>exam guide</span></div>
+  </div></div>
+
+  <section id="path"><div class="wrap">
+    <div class="eyebrow">6-week path · ~6–8 h/week</div>
+    <h2>From first login to exam day</h2>
+    <p class="lead">Every week ends with something you ran, and a gate you pass before moving on.</p>
+    <div class="path">${WEEKS.map(w => `
+      <div class="step">
+        <div class="num ${pct(w.steps) === 100 ? 'ok' : ''}"><span><small>WEEK</small>${w.n}</span></div>
+        <div>
+          <h3>${esc(w.title)} <span class="wk-pct">${w.steps.filter(s => done.has(s.key)).length}/${w.steps.length}</span></h3>
+          <dl><dt>Read</dt><dd>${esc(w.read)}</dd><dt>Do</dt><dd>${esc(w.do)}</dd><dt>Gate</dt><dd>${esc(w.gate)}</dd></dl>
+          <div class="links">${w.steps.map(s => `<a href="#/step/${s.key}" class="${done.has(s.key) ? 'ok' : ''}">${done.has(s.key) ? '✓ ' : ''}${esc(s.t)}</a>`).join('')}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div></section>
+
+  <section id="domains"><div class="wrap">
+    <div class="eyebrow">Five domains · one exam</div>
+    <h2>Build depth where the points are</h2>
+    <p class="lead">Domains 2 and 3 together are 52% of the exam: that is where Bedrock, RAG, prompting, agents and evaluation live.</p>
+    <div class="grid">${DOMAINS.map(d => `
+      <div class="card">
+        <div class="kicker">Domain 0${d.n} · ${d.w}% · ≈ ${d.q} scored Qs</div>
+        <h3>${esc(d.title)}</h3>
+        <div class="weight"><i style="width:${d.w / 28 * 100}%"></i></div>
+        <p>${esc(d.blurb)}</p>
+        <div class="tags">${d.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>
+        <div class="foot"><a class="btn" href="#/course/domain-${d.n}.md">Open course</a><a class="btn ghost" href="#/domains/${d.file}">Cheat sheet</a></div>
+      </div>`).join('')}
+    </div>
+  </div></section>
+
+  <section id="labs"><div class="wrap">
+    <div class="eyebrow">Hands-on · plain Python + boto3</div>
+    <h2>Labs, a few cents in total</h2>
+    <p class="lead">No Knowledge Bases or OpenSearch Serverless on purpose: they bill by the hour even when idle. Lab 03 shows the same mechanics locally.</p>
+    <div class="grid">${LABS.map(l => `
+      <div class="card">
+        <div class="kicker">Lab ${l.n} · Domains ${l.d}</div>
+        <h3>${esc(l.title)}</h3>
+        <p>${esc(l.blurb)}</p>
+        <div class="foot">
+          <a class="btn ghost" href="#/course/lab-${l.n}.md">Lab guide</a>
+          <span class="badge ${l.aws ? 'aws' : 'free'}">${l.aws ? 'Needs AWS' : 'Offline'} · ${esc(l.cost)}</span>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div></section>
+
+  <footer>Independent study material, not affiliated with or endorsed by AWS.</footer>`;
+}
+
+function sidebar(cur) {
+  return `<aside class="side">
+    <a href="#/progress" class="overall"><b>${pct(STEPS)}%</b> complete<div class="weight"><i style="width:${pct(STEPS)}%"></i></div></a>
+    ${WEEKS.map(w => `
+      <h4 class="${cur?.week === w ? 'cur' : ''}">Week ${w.n} · ${esc(w.title)} <span>${w.steps.filter(s => done.has(s.key)).length}/${w.steps.length}</span></h4>
+      ${w.steps.map(s => stepLink(s, cur)).join('')}`).join('')}
+    <details class="ref"><summary>Reference</summary>${REFERENCE.map(([t, f]) => `<a href="#/${f}">${esc(t)}</a>`).join('')}</details>
+  </aside>`;
+}
+
+function progressPage() {
+  app.innerHTML = `<div class="doc">${sidebar(null)}<article>
+    <h1>My progress</h1>
+    <p>Tick a step from the button at the bottom of its page, or here. Progress is saved in this browser.</p>
+    <div class="weight big"><i style="width:${pct(STEPS)}%"></i></div><p><b>${pct(STEPS)}%</b> of the path done · ${done.size} of ${STEPS.length} steps</p>
+    ${WEEKS.map(w => `<h2>Week ${w.n} — ${esc(w.title)} <small>${w.steps.filter(s => done.has(s.key)).length}/${w.steps.length}</small></h2>
+      <p class="muted"><b>Gate:</b> ${esc(w.gate)}</p>
+      <ul class="checks">${w.steps.map(s => `<li><label><input type="checkbox" data-k="${s.key}" ${done.has(s.key) ? 'checked' : ''}> <a href="#/step/${s.key}">${esc(s.t)}</a></label></li>`).join('')}</ul>`).join('')}
+    <p><button class="btn ghost" id="reset">Reset all progress</button></p>
+  </article></div>`;
+  app.querySelectorAll('input[data-k]').forEach(c => c.onchange = () => { c.checked ? done.add(c.dataset.k) : done.delete(c.dataset.k); save(); progressPage(); });
+  document.getElementById('reset').onclick = () => { if (confirm('Clear all ticks?')) { done.clear(); save(); progressPage(); } };
+}
+
+async function doc(path, step) {
+  app.innerHTML = `<div class="doc">${sidebar(step)}<article id="doc">Loading…</article></div>`;
+  const el = document.getElementById('doc');
+  const res = await fetch(path);
+  const text = res.ok ? await res.text() : null;
+  let html;
+  if (!text) html = `<h1>Coming soon</h1><p>${esc(path)} is not written yet.</p>`;
+  else if (!path.endsWith('.md')) html = `<div class="kicker">${esc(path)}</div><h1>${esc(path.split('/').pop())}</h1>
+      <p>Run from the repo root:</p><pre><code>${esc(step?.cmd || 'python ' + path)}</code></pre><h2>Source</h2><pre><code>${esc(text)}</code></pre>`;
+  else html = marked.parse(text);
+  const banner = step ? `<div class="banner"><span class="kicker">Week ${step.week.n} · step ${step.key.split('.')[1]} of ${step.week.steps.length}</span>
+      <b>${esc(step.t)}</b>${step.note ? `<p>${esc(step.note)}</p>` : ''}${step.cmd && path.endsWith('.md') ? `<pre><code>${esc(step.cmd)}</code></pre>` : ''}</div>` : '';
+  el.innerHTML = banner + html + (step ? finishBar(step) : '');
+  if (step) wireFinish(step);
+  if (!text || !path.endsWith('.md')) return;
+
+  el.querySelectorAll('code.language-mermaid').forEach(c => {
+    const div = document.createElement('div'); div.className = 'mermaid'; div.textContent = c.textContent;
+    c.parentElement.replaceWith(div);
+  });
+  await mermaid.run();
+  // GitHub-style heading ids so in-page anchors work
+  const slug = s => s.trim().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s/g, '-');
+  el.querySelectorAll('h1, h2, h3, h4').forEach(h => h.id = slug(h.textContent));
+  // keep relative links inside this viewer
+  const base = new URL(path, location.origin + '/');
+  el.querySelectorAll('a[href]').forEach(a => {
+    const href = a.getAttribute('href');
+    if (/^(https?:|mailto:)/.test(href)) { a.target = '_blank'; return; }
+    if (href.startsWith('#')) {
+      a.onclick = e => { e.preventDefault(); document.getElementById(decodeURIComponent(href.slice(1)))?.scrollIntoView(); };
+      return;
+    }
+    a.href = '#' + new URL(href, base).pathname.replace(/\/$/, '/README.md');
+  });
+}
+
+function finishBar(step) {
+  const nx = STEPS[STEPS.indexOf(step) + 1];
+  const isDone = done.has(step.key);
+  return `<div class="finish">
+    ${isDone ? `<span class="badge free">✓ Step completed</span> <button class="linkish" id="undo">Mark as not done</button>` : ''}
+    <span class="spacer"></span>
+    ${nx ? `<button class="btn" id="fin">${isDone ? 'Next' : 'Mark complete & continue'} → ${esc(nx.t)}</button>`
+         : `<button class="btn" id="fin">${isDone ? 'See my progress' : 'Mark complete & finish the path'}</button>`}
+  </div>`;
+}
+function wireFinish(step) {
+  const nx = STEPS[STEPS.indexOf(step) + 1];
+  document.getElementById('fin').onclick = () => { done.add(step.key); save(); location.hash = nx ? '#/step/' + nx.key : '#/progress'; };
+  const u = document.getElementById('undo');
+  if (u) u.onclick = () => { done.delete(step.key); save(); doc(step.f, step); };
+}
+
+function route() {
+  const h = decodeURIComponent(location.hash);
+  if (h === '#/progress') { progressPage(); scrollTo(0, 0); return; }
+  if (h.startsWith('#/') && last !== h) { last = h; save(); }
+  if (h.startsWith('#/step/')) {
+    const s = STEPS.find(s => s.key === h.slice(7));
+    if (s) { doc(s.f, s); scrollTo(0, 0); return; }
+  }
+  if (h.startsWith('#/')) {
+    const path = h.slice(2);
+    // opened from a link: attach the first unfinished step for this page, if any
+    const s = STEPS.find(s => s.f === path && !done.has(s.key)) || STEPS.find(s => s.f === path);
+    doc(path, s); scrollTo(0, 0); return;
+  }
+  home();
+  if (h) document.getElementById(h.slice(1))?.scrollIntoView();
+  else scrollTo(0, 0);
+}
+addEventListener('hashchange', route);
+// reopen where you stopped
+loadProgress().then(() => { if (!location.hash && last) location.hash = last; else route(); });
+</script>
+</body>
+</html>

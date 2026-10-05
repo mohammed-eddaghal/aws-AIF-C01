@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+review.mp3
+.env
